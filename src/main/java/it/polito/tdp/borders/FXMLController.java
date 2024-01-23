@@ -4,6 +4,7 @@ package it.polito.tdp.borders;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.borders.model.Country;
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +29,33 @@ public class FXMLController {
 
     @FXML
     void doCalcolaConfini(ActionEvent event) {
+    	
+    	String input = this.txtAnno.getText();
+    	int inputNum = 0;
+    	
+    	try {
+    		inputNum = Integer.parseInt(input);
+    	} catch(NumberFormatException e) {
+    		this.txtResult.setText("Input non valido.");
+    		return;
+    	}
+    	
+    	if(inputNum >= 1816 && inputNum <= 2016) {
+    		this.model.creaGrafo(inputNum);
+    		
+    		this.txtResult.appendText("Il grafo creato ha " + this.model.getGrafo().vertexSet().size() + " vertici.\n");
+        	this.txtResult.appendText("Il grafo creato ha " + this.model.getGrafo().edgeSet().size() + " archi.\n");
+        	
+        	for(Country c : model.getGrafo().vertexSet()) {
+				this.txtResult.appendText("Lo stato " + c.getStateNme() + " confina con " + model.getGrafo().degreeOf(c) + " stati.\n");
+			}
+        	
+        	this.txtResult.appendText("Il grafo ha " + this.model.calcolaConnessa() + " componenti connesse.\n");
+        	
+    		
+    	} else {
+    		this.txtResult.setText("Anno inserito non valido. Inserire un anno compreso tra il 1816 e il 2016.");
+    	}
 
     }
 
